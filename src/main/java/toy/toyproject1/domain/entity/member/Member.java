@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toy.toyproject1.domain.entity.board.Board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Member {
     private Long id;
 
     @OneToMany(mappedBy = "member")
-    private List<Board> boards;
+    private List<Board> boards = new ArrayList<>();
 
     private String username;
     private String userid;

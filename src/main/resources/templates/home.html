@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div>
+        <button th:onclick="|location.href='@{/members/add}'|"
+            onclick="location.href='addForm.html'" th:text="'회원가입'">??</button>
+    </div>
+    <div>
+        <button th:onclick="|location.href='@{/members/login}'|"
+                onclick="location.href='addForm.html'" th:text="'로그인'">??</button>
+    </div>
+</body>
+</html>

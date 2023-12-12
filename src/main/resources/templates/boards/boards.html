@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1 th:text="게시판">???</h1>
+
+    <h3 th:text="|${member.username}님 안녕하세요!!|"></h3>
+
+    <form th:action="@{/members/logout}" method="post">
+        <button type="submit" th:text="로그아웃"></button>
+    </form>
+
+    <button th:onclick="|location.href='@{/boards/add}'|" th:text="'게시물 올리기'"></button>
+
+    <table>
+        <thead>
+        <tr>
+            <th th:text="제목">??</th>
+            <th th:text="작성자">??</th>
+            <th th:text="작성날짜">??</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${searchedBoards}">
+            <td><a th:href="@{|/boards/${board.id}|}" th:text="${board.title}">?</a></td>
+            <td th:text="${board.writer}">?</td>
+            <td th:text="${board.writtenDate}">?</td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

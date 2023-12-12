@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div>
+    <div>
+        <h2 th:text="'게시글 작성 창'">??? ?? ?</h2>
+    </div>
+
+    <form th:action th:object="${boardAddDto}" method="post">
+        <label for="title" th:text="제목">??</label>
+        <input type="text" id="title" th:field="*{title}"
+               th:errorclass="field-error" placeholder="제목을 입력하세요">
+        <div class="field-error" th:errors="*{title}">?</div>
+
+        <label for="content" th:text="내용">??</label>
+        <input type="text" id="content" th:field="*{content}"
+               th:errorclass="field-error" placeholder="내용을 입력하세요">
+        <div class="field-error" th:errors="*{content}">?</div>
+
+
+        <button type="submit" th:text="게시">??</button>
+        <button th:onclick="|location.href='@{/boards/boards}'|" type="button" th:text="취소"></button>
+    </form>
+</div>
+</body>
+</html>

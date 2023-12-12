@@ -24,4 +24,15 @@ public class Board extends AuditingTime {
 
     @Column(length = 500)
     private String content;
+
+    public Board(Member member, String title, String content) {
+        addMember(member);
+        this.title = title;
+        this.content = content;
+    }
+
+    public void addMember(Member member) {
+        this.member = member;
+        member.getBoards().add(this);
+    }
 }
