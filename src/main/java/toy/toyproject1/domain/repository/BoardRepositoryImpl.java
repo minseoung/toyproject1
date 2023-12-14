@@ -38,11 +38,12 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                 .fetch();
     }
 
+
     private Predicate titleEq(String titleCond) {
-        return StringUtils.hasText(titleCond) ? board.title.eq(titleCond) : null;
+        return StringUtils.hasText(titleCond) ? board.title.contains(titleCond) : null;
     }
 
     private Predicate writerEq(String writerCond) {
-        return StringUtils.hasText(writerCond) ? board.member.username.eq(writerCond) : null;
+        return StringUtils.hasText(writerCond) ? board.member.username.contains(writerCond) : null;
     }
 }

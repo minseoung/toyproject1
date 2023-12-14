@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2 th:text="'게시물 수정 페이지'"></h2>
+
+<form th:action th:object="${boardEditDto}" method="post">
+    <div>
+        <label for="title" th:text="제목"></label>
+        <input type="text" id="title" th:field="*{title}" th:errorclass="field-error">
+        <div class="field-error" th:errors="*{title}"></div>
+    </div>
+
+    <div>
+        <label for="content" th:text="내용"></label>
+        <input type="text" id="content" th:field="*{content}" th:errorclass="field-error">
+        <div class="field-error" th:errors="*{content}"></div>
+    </div>
+
+    <button type="submit" th:text="저장">저장</button>
+    <button th:onclick="|location.href='@{/boards/*{id}}'|" type="button" th:text="취소"></button>
+</form>
+</body>
+</html>

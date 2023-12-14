@@ -35,4 +35,9 @@ public class Board extends AuditingTime {
         this.member = member;
         member.getBoards().add(this);
     }
+
+    public void edit(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

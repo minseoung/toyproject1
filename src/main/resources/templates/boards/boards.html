@@ -6,13 +6,21 @@
 <body>
     <h1 th:text="게시판">???</h1>
 
-    <h3 th:text="|${member.username}님 안녕하세요!!|"></h3>
+    <h3 th:text="|${username}님 안녕하세요!!|"></h3>
 
     <form th:action="@{/members/logout}" method="post">
         <button type="submit" th:text="로그아웃"></button>
     </form>
 
     <button th:onclick="|location.href='@{/boards/add}'|" th:text="'게시물 올리기'"></button>
+
+    <form th:object="${searchCond}">
+        <input type="text" th:field="*{titleCond}" placeholder="제목">
+        <input type="text" th:field="*{writerCond}" placeholder="작성자">
+        <button type="submit" th:text="검색"></button>
+        <button type="button" th:text="'내가 쓴 글'"
+                th:onclick="|location.href='@{/boards?titleCond=&writerCond={username}(username=${username})}'|"></button>
+    </form>
 
     <table>
         <thead>

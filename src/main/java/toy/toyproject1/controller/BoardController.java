@@ -8,14 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import toy.toyproject1.domain.entity.board.Board;
-import toy.toyproject1.domain.entity.board.BoardAddDto;
-import toy.toyproject1.domain.entity.board.BoardDisplayDto;
-import toy.toyproject1.domain.entity.board.BoardSearchCondition;
+import toy.toyproject1.domain.entity.board.*;
 import toy.toyproject1.domain.entity.member.Member;
 import toy.toyproject1.domain.repository.BoardRepository;
 import toy.toyproject1.domain.repository.MemberRepository;
@@ -31,14 +26,32 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/boards")
-    public String boards(Model model, HttpServletRequest request) {
-        List<BoardDisplayDto> searchedBoards = boardRepository.search(new BoardSearchCondition());
+    public String boards(@ModelAttribute(name = "searchCond") BoardSearchCondition searchCond,
+                         @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId,  Model model) {
+        //게시판 목록에 보여질 게시글 목록 Dto: BoardDisplayDto
+        List<BoardDisplayDto> searchedBoards = boardRepository.search(searchCond);
         model.addAttribute("searchedBoards", searchedBoards);
-        Long loginMemberId = (Long) request.getSession(false).getAttribute("loginMemberId");
-        Member loginMember = memberRepository.findById(loginMemberId).get();
-        model.addAttribute("member", loginMember);
+
+        //보여질 로그인 한 회원의 이름
+        String username = memberRepository.findUsernameById(loginMemberId);
+        model.addAttribute("username", username);
+
         return "boards/boards";
     }
+
+    @GetMapping("/boards/{boardId}")
+    public String board(@PathVariable(name = "boardId") Long boardId, Model model,
+                        @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId) {
+        //상세페이지에 보여질 보드와 멤버 정보 Dto: BoardDto
+        BoardDto boardDto = boardRepository.findBoardDtoById(boardId);
+        model.addAttribute("boardDto", boardDto);
+
+        //현재 로그인한 멤버에 따라 보여져야하는 페이지 요소가 있어서 id를 넘김
+        model.addAttribute("loginMemberId", loginMemberId);
+
+        return "boards/board";
+    }
+
 
     @GetMapping("/boards/add")
     public String addForm(Model model, HttpServletRequest request) {
@@ -47,14 +60,41 @@ public class BoardController {
     }
 
     @PostMapping("/boards/add")
-    public String add(@Validated BoardAddDto boardAddDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String add(@Validated BoardAddDto boardAddDto,
+                      @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId,
+                      BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
             return "boards/addForm";
         }
 
-        Long loginMemberId = (Long) request.getSession(false).getAttribute("loginMemberId");
         boardService.post(loginMemberId, boardAddDto.getTitle(), boardAddDto.getContent());
 
+        return "redirect:/boards";
+    }
+
+    @GetMapping("/boards/{boardId}/edit")
+    public String editForm(@PathVariable(name = "boardId") Long boardId, Model model) {
+        BoardEditDto boardEditDto = boardRepository.findEditDtoById(boardId);
+        model.addAttribute("boardEditDto", boardEditDto);
+        return "boards/editForm";
+    }
+
+    @PostMapping("/boards/{boardId}/edit")
+    public String edit(@PathVariable(name = "boardId") Long boardId, @Validated BoardEditDto boardEditDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "boards/editForm";
+        }
+
+        boardService.edit(boardId, boardEditDto);
+
+        return "redirect:/boards/{boardId}";
+    }
+
+    @GetMapping("/boards/{boardId}/delete")
+    public String delete(@PathVariable(name = "boardId") Long boardId) {
+        boardRepository.deleteById(boardId);
         return "redirect:/boards";
     }
 }

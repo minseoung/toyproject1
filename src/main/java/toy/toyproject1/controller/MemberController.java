@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import toy.toyproject1.domain.entity.member.LoginDto;
 import toy.toyproject1.domain.entity.member.Member;
@@ -38,8 +35,7 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return "members/addForm";
         }
-        Member member = new Member(memberAddDto.getUsername(), memberAddDto.getUserid(), memberAddDto.getPw());
-        Member savedMember = memberRepository.save(member);
+        memberService.join(memberAddDto);
         return "redirect:/home";
     }
 
@@ -52,15 +48,17 @@ public class MemberController {
     @PostMapping("/members/login")
     public String login(@Validated LoginDto loginDto, BindingResult bindingResult, HttpServletRequest request,
                         @RequestParam(name = "redirectURL", defaultValue = "/boards") String redirectURL) {
+        if (bindingResult.hasErrors()) {
+            return "members/loginForm";
+        }
+
         Member findMember = memberRepository.findByUserid(loginDto.getUserid());
-        if (findMember == null || (findMember.getPw().equals(loginDto.getPw())) == false) {
+        if (findMember == null || !(findMember.getPw().equals(loginDto.getPw()))) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "members/loginForm";
         }
 
-        HttpSession session = request.getSession();
-        session.setAttribute("loginMemberId", findMember.getId());
-
+        request.getSession().setAttribute("loginMemberId", findMember.getId());
         return "redirect:" + redirectURL;
     }
 
