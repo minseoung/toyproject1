@@ -13,14 +13,18 @@
         <div class="field-error" th:errors="*{title}"></div>
     </div>
 
+    <p></p>
+
     <div>
         <label for="content" th:text="내용"></label>
-        <input type="text" id="content" th:field="*{content}" th:errorclass="field-error">
+        <textarea cols="50" rows="10" type="text" id="content" th:field="*{content}" th:errorclass="field-error"></textarea>
         <div class="field-error" th:errors="*{content}"></div>
     </div>
 
+    <p></p>
+
     <button type="submit" th:text="저장">저장</button>
-    <button th:onclick="|location.href='@{/boards/*{id}}'|" type="button" th:text="취소"></button>
+    <button th:onclick="|location.href='@{/boards/{boardId}(boardId=${boardEditDto.id})}'|" type="button" th:text="취소"></button>
 </form>
 </body>
 </html>

@@ -27,7 +27,8 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
 
         return queryFactory
                 .select(Projections.constructor(BoardDisplayDto.class,
-                        board.id,
+                        board.id.as("boardId"),
+                        board.member.id.as("memberId"),
                         board.title,
                         board.member.username.as("writer"),
                         board.lastModifiedDate.as("writtenDate")

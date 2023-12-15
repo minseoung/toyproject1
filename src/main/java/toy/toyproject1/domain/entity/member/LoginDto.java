@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class LoginDto {
-    @NotBlank
+    @NotBlank(message = "아이디를 입력하세요.")
     private String userid;
-    @NotBlank
+    @NotBlank(message = "비밀번호를 입력하세요.")
     private String pw;
 }

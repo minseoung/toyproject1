@@ -61,8 +61,9 @@ public class BoardController {
 
     @PostMapping("/boards/add")
     public String add(@Validated BoardAddDto boardAddDto,
+                      BindingResult bindingResult,
                       @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId,
-                      BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                      RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             return "boards/addForm";

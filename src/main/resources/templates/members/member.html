@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+     <h4 th:text="|이름: ${memberDtos[0].username}|"></h4>
+
+     <table>
+         <thead>
+         <tr>
+             <th th:text="'올린 게시물'"></th>
+         </tr>
+         </thead>
+         <tbody>
+         <tr th:each="memberDto : ${memberDtos}">
+             <td><a th:href="@{|/boards/${memberDto.boardId}|}" th:text="${memberDto.title}"></a></td>
+         </tr>
+         </tbody>
+     </table>
+     <button type="button" th:onclick="location.href='@{/members/addFriend}'" th:text="'친구 추가'"></button>
+     <button th:text="뒤로" type="button"
+             th:onclick="|location.href='@{/boards}'|"></button>
+</body>
+</html>

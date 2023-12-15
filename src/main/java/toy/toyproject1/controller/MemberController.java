@@ -12,9 +12,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import toy.toyproject1.domain.entity.member.LoginDto;
 import toy.toyproject1.domain.entity.member.Member;
 import toy.toyproject1.domain.entity.member.MemberAddDto;
+import toy.toyproject1.domain.entity.member.MemberDto;
 import toy.toyproject1.domain.repository.MemberRepository;
 import toy.toyproject1.service.MemberService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -69,5 +71,13 @@ public class MemberController {
             session.invalidate();
         }
         return "redirect:/home";
+    }
+
+    @GetMapping("/members/{memberId}")
+    public String member(@PathVariable(name = "memberId") Long memberId, Model model) {
+        List<MemberDto> memberDtos = memberRepository.findDtoById(memberId);
+        model.addAttribute("memberDtos", memberDtos);
+//        model.addAttribute("username", )
+        return "members/member";
     }
 }
