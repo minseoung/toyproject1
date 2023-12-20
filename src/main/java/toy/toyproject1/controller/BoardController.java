@@ -27,7 +27,8 @@ public class BoardController {
 
     @GetMapping("/boards")
     public String boards(@ModelAttribute(name = "searchCond") BoardSearchCondition searchCond,
-                         @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId,  Model model) {
+                         @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId,  Model model
+    ) {
         //게시판 목록에 보여질 게시글 목록 Dto: BoardDisplayDto
         List<BoardDisplayDto> searchedBoards = boardRepository.search(searchCond);
         model.addAttribute("searchedBoards", searchedBoards);

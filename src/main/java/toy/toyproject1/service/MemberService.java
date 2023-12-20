@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import toy.toyproject1.controller.MemberController;
+import toy.toyproject1.controller.api.ApiController;
 import toy.toyproject1.domain.entity.member.LoginDto;
 import toy.toyproject1.domain.entity.member.Member;
 import toy.toyproject1.domain.entity.member.MemberAddDto;
@@ -26,6 +28,11 @@ public class MemberService {
         if (findMember == null || !(findMember.getPw() == loginDto.getPw())) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
         }
+    }
+
+    public Member update(Long memberId, String userid, String pw) {
+        Member member = memberRepository.findById(memberId).get();
+        return member.update(userid, pw);
     }
 
 }

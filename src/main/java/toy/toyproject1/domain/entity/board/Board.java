@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import toy.toyproject1.domain.entity.AuditingTime;
 import toy.toyproject1.domain.entity.member.Member;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "title", "content"})
 public class Board extends AuditingTime {
 
     @Id @GeneratedValue
