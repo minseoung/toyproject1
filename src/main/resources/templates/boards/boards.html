@@ -46,11 +46,6 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="board : ${searchedBoards}">
-            <td><a th:href="@{|/boards/${board.boardId}|}" th:text="${board.title}">?</a></td>
-            <td><a th:href="@{|/members/${board.memberId}|}" th:text="${board.writer}">?</a></td>
-            <td th:text="${board.writtenDate}">?</td>
-        </tr>
         </tbody>
     </table>
 </body>
